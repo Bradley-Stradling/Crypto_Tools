@@ -13,6 +13,10 @@
 red=`tput setaf 1`
 green=`tput setaf 2`
 yellow=`tput setaf 3`
+blue=`tput setaf 4`
+purple=`tput setaf 5`
+lightblue=`tput setaf 6`
+black=`tput setaf 0`
 reset=`tput sgr0`
 
 show_Help() {
@@ -98,7 +102,7 @@ else
 echo "${red}Unable to read $input_File :( Exiting${reset}" && exit 1
 fi
 if [[ -r $output_File ]]; then
-echo -e "${green}Input File found at $output_File ${green}\n"
+echo -e "${green}Output File found at $output_File ${green}"
 else
 echo "${red}Unable to read $output_File :( Exiting${reset}" && exit 1
 fi
@@ -109,35 +113,37 @@ lowercase=(
 uppercase=(
 "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"
 )
+positional_Chart=${!uppercase[@]}
 
-echo ${uppercase[@]}
+echo ${blue}${positional_Chart[@]}
+shifted_Positional_Chart=("${positional_Chart[@]:$rotation}" "${positional_Chart[@]:0:$rotation}")
+echo ${shifted_Positional_Chart[@]}
+echo ${lightblue}${uppercase[@]}
 shifted_Uppercase=("${uppercase[@]:$rotation}" "${uppercase[@]:0:$rotation}")
 echo ${shifted_Uppercase[@]}
-
-echo
-
-echo ${lowercase[@]}
+echo ${yellow}${lowercase[@]}
 shifted_Lowercase=("${lowercase[@]:$rotation}" "${lowercase[@]:0:$rotation}")
-echo ${shifted_Lowercase[@]}
+echo ${shifted_Lowercase[@]}${purple}
 
 while read -n1 char; do
+count=0
 for input in ${uppercase[@]}
 do
 if [[ $char == $input ]]; then
-echo "$char is uppercase"
+upper_Or_Lower="upper"
+position=$(($count - $rotation)) # need to handle this being a negative number
+echo "${green}$char${purple} is uppercase at position $count and rotates by $rotation back to $position as ${green}${uppercase[$position]}"
 fi
+count=$(($count + 1))
 done
+count=0
 for input in ${lowercase[@]}
 do
 if [[ $char == $input ]]; then
-echo "$char is lowercase"
+upper_Or_Lower="lower"
+position=$(($count - $rotation)) # need to handle this being a negative number
+echo "${green}$char${purple} is lowercase at position $count and rotates by $rotation back to $position as ${green}${lowercase[$position]}"
 fi
+count=$(($count + 1))
 done
 done < $input_File
-
-
-
-
-
-
-
