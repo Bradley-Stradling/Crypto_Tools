@@ -14,7 +14,12 @@ lowercase=(
 uppercase=(
 "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"
 )
+positional_Chart=${!uppercase[@]}
 
+echo ${positional_Chart[@]}
+shifted_Positional_Chart=("${positional_Chart[@]:$rotation}" "${positional_Chart[@]:0:$rotation}")
+echo ${shifted_Positional_Chart[@]}
+echo
 echo ${uppercase[@]}
 shifted_Uppercase=("${uppercase[@]:$rotation}" "${uppercase[@]:0:$rotation}")
 echo ${shifted_Uppercase[@]}
