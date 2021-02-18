@@ -6,8 +6,8 @@
 # (")_(")	Lincense: https://unlicense.org/
 #*******************************************************************************
 # (\_/)		Simple Vignere cipher script. That can handle encipher or 
-# (*.*)		decipher mode, and any rotation count between 0 and 26
-#(")_(")	
+# (*.*)		decipher mode, and any keyword.
+#(")_(")	Inomplete, and should not be run as of 2:59 PM 2/18/2021
 #*******************************************************************************
 
 red=`tput setaf 1`
