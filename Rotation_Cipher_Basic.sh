@@ -28,7 +28,7 @@ echo -e "or \n \"./caesar.sh --decipher -rotation 3 -input_File infile -output_F
 echo ""
 
 echo -e "The 1st option passed should be\n -e or --encipher # to flag encipher or dicpher"
-echo -e "The 2nd option passed should be\n -e or --rotation # to flag the rotation count followed by a number between 0 and 26"
+echo -e "The 2nd option passed should be\n -r or --rotation # to flag the rotation count followed by a number between 0 and 26"
 echo -e "The 3rd option passed should be\n -i or --input_File # to flag the input file followed by the path/name of the file"
 echo -e "The 4th option passed should be\n -o or --output_FIle # to flag the output file followed by the path/name of the file"
 }
