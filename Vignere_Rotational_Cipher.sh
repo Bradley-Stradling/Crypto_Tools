@@ -22,6 +22,11 @@ reset=`tput sgr0`
 echo "This script is nowhere near complete. Please wait for it to be finished before running."
 exit 0
 
+# to adapt this script to handling a key another set of loops to iterate over the key will be needed
+# this will need to be done for both the encipher and decipher method, but may be able to change little
+# of the current logic to achieve this if the looping is intertwined properly
+# as well as another array to house each value of the keyword to be operated upon
+
 show_Help() {
 echo -e "Example run ${red}encipher${reset} by key value of ACE \n \"./caesar.sh -e -k ACE -i infile -o outfile\""
 echo -e "or \n \"./caesar.sh --encipher -rotation 3 -input_File infile -output_File outfile\"\n"
@@ -83,15 +88,18 @@ else
 echo "${yellow}Please pass options in correct order. Use -h to see help. Exiting${reset}"
 exit
 fi
-if [[ $2 == "-r" || $2 == --rotation ]]; then
-if [[ $cipher == "encipher" ]]; then
-rotation=$3
-elif [[ $cipher == decipher ]]; then
-rotation=$((26 - $3))
-elif [[ $1 != "-r" ]]; then
+#how the keyword is stored needs to be refactored here to store the keyword as an array
+# then each value in the array should be stored as the rotational value in another array
+# so it may be iterated upon without changing as much code
+# need to move encipher/decipher changes to rotational values to generating the value array
+# of the keyword later in the logic. rotation will still be the variable used for operation
+# but will be chahnged as iteration over the keyword values occurs
+# for now here will kust store keyword string as an array of char's
+if [[ $2 == "-k" || $2 == --key ]]; then
+keyword=$3
+elif [[ $1 != "-k" ]]; then
 echo "${yellow}Please pass options in correct order. Use -h to see help. Exiting${reset}"
 exit 1
-fi
 fi
 if [[ $4 == "-i" || $4 == --input_File ]]; then
 input_File=$5
@@ -111,7 +119,7 @@ if [[ -z "$cipher" ]]; then
 echo "${red} cipher variable was not set :( Exiting${reset}"
 exit 1
 fi
-if [[ -z "$rotation" ]]; then
+if [[ -z "$keyword" ]]; then
 echo "${red} rotation variable was not set :( Exiting${reset}"
 exit 1
 fi
@@ -124,15 +132,18 @@ echo "${red} output_File variable was not set :( Exiting${reset}"
 exit 1
 fi
 
+keyword_Spaced=$(echo $keyword | sed 's/.\{1\}/& /g')
+
+keyword_Array=($keyword_Spaced)
+
 if [[ $cipher == "encipher" ]]; then
 echo "${green}Encipher mode set${reset}"
 elif [[ $cipher == "decipher" ]]; then
 echo "${green}Decipher mode set${reset}"
 fi
-
-#check_File_Locations
+# should this be moved to check each roational value?
 if [ $rotation -lt 26 ] && [ $rotation -gt 0 ]; then
-echo -e "${green}Rotation set to $rotation ${reset}"
+echo -e "${green}Keyword set to $keyword_Array ${reset}"
 else
 echo "${red}Unable to set the rotation to $rotation :( Exiting${reset}" && exit 1
 fi
