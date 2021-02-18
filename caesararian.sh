@@ -181,7 +181,6 @@ echo -n ${uppercase[$position]} >> $output_File
 fi
 count=$(($count + 1))
 done
-#echo "${uppercase[$position]}"
 count=0
 for input in ${lowercase[@]}
 do
