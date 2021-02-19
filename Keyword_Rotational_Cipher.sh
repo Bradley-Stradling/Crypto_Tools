@@ -19,11 +19,16 @@ lightblue=`tput setaf 6`
 black=`tput setaf 0`
 reset=`tput sgr0`
 
-echo "Script currently is exactly the same functionally as "\
-	 "Basic_Rotational_Cipher.sh, only the help function has been changed."
-exit 0
+#echo "Script currently is exactly the same functionally as "\
+#	 "Basic_Rotational_Cipher.sh, only the help function has been changed."
+#exit 0
 
 show_Help() {
+echo -e "This script is designed to assist with processing a Vignere cipher."
+if [[ $1 == "-e" || $1 == "--explain" || $1 == "-vv" || $1 == "--very-verbose" ]]; then
+echo "### Explanation of a Vignere cipher here ###"
+fi
+if [[ $1 != "-e" && $1 != "--explain" ]]; then
 echo -e "Requires 7 total inputs"
 echo -e "-e or --encipher || -d or --decipher \t# to flag encipher or dicpher"
 echo -e "-k or --keyword \t# to flag the key followed by a keyword"
@@ -31,10 +36,17 @@ echo -e "-i or --input-File \t# to flag the input file followed by the "\
 		"path/name of the file"
 echo -e "-o or --output-FIle \t# to flag the output file followed by the "\
 		"path/name of the file\n"
-echo -e "2 verbose options exist but are not needed to run"
+echo -e "2 verbose options exist but are not needed to run, can be used with help"
 echo -e "-v or --verbose # displays cipher chart"
 echo -e "-vv or --very-verbose will display each char's rotation, not "\
 		"recommended for long files\n"
+echo -e "An addtional option can be supplied after -h to call for explanation "\
+		"\bof a Vignere keyword cipher that this script is based on."
+echo -e "\"./Keyword_Rotation_Cipher.sh -h -e\" or "\
+		"\"./Keyword_Rotation_Cipher.sh --help --explain\"\n"
+fi
+
+if [[ $1 == "-v" || $1 == "--verbose" || $1 == "-vv" || $1 == "--very-verbose" ]]; then
 echo -e "Example run ${red}encipher${reset} with a keyword of ACE\n\""\
 		"${yellow}\b./Keyword_Rotation_Cipher.sh -e -k ACE -i infile -o outfile"\
 		"${reset}\b\""
@@ -55,12 +67,13 @@ echo -e "Example run ${red}very verbose${reset} with a keyword of ACE\n\""\
 		"${reset}\b\""
 echo -e "or \n\"${yellow}./Keyword_Rotation_Cipher.sh --encipher --keyword"\
 		"ACE --input-File infile --output-File outfile --very-verbose${reset}\"\n"
+fi
 exit 0
 }
 
 #check_Help
-if [[ $1 == "-h" || $1 == --help ]]; then
-show_Help
+if [[ $1 == "-h" || $1 == "--help" ]]; then
+show_Help $2
 fi
 
 more_Options() {
