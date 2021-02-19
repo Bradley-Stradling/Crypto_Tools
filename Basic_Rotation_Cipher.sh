@@ -28,7 +28,7 @@ echo -e "or \n \"./caesar.sh --decipher -rotation 3 -input_File infile -output_F
 echo ""
 
 echo -e "The 1st option passed should be\n -e or --encipher # to flag encipher or dicpher"
-echo -e "The 2nd option passed should be\n -r or --rotation # to flag the rotation count followed by a number between 0 and 26"
+echo -e "The 2nd option passed should be\n -e or --rotation # to flag the rotation count followed by a number between 0 and 26"
 echo -e "The 3rd option passed should be\n -i or --input_File # to flag the input file followed by the path/name of the file"
 echo -e "The 4th option passed should be\n -o or --output_FIle # to flag the output file followed by the path/name of the file"
 }
@@ -139,7 +139,7 @@ else
 echo "${red}Unable to read $input_File :( Exiting${reset}" && exit 1
 fi
 if [[ -r $output_File ]]; then
-echo -e "${green}Output File found at $output_File ${green}"
+echo -e "${green}Output File found at $output_File ${reset}"
 else
 echo "${red}Unable to read $output_File :( Exiting${reset}" && exit 1
 fi
@@ -150,9 +150,14 @@ lowercase=(
 uppercase=(
 "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"
 )
-positional_Chart=${!uppercase[@]}
+positional_Chart=( ${!uppercase[@]} )
 
-echo ${blue}${positional_Chart[@]}
+for i in ${positional_Chart[@]}
+do
+positional_Chart[$i]=$(( ${positional_Chart[$i]} + 1 ))
+done
+
+echo "${blue}${positional_Chart[@]}"
 shifted_Positional_Chart=("${positional_Chart[@]:$rotation}" "${positional_Chart[@]:0:$rotation}")
 echo ${shifted_Positional_Chart[@]}
 echo ${lightblue}${uppercase[@]}
@@ -164,7 +169,7 @@ echo ${shifted_Lowercase[@]}${purple}
 
 #Encipher
 while read -n1 char; do
-count=0
+count=1
 for input in ${uppercase[@]}
 do
 if [[ $char == " " ]]; then
@@ -172,28 +177,33 @@ echo "a space was detected"
 fi
 if [[ $char == $input ]]; then
 upper_Or_Lower="upper"
-position=$(($count - $rotation)) # need to handle this being a negative number
+position=$(($count - $rotation - 1)) # need to handle this being a negative number
 if [[ $position -lt "0" ]]; then
 position=$(($position + 26))
 fi
-echo "${green}$char${purple} is uppercase at position $count and rotates by $rotation back to $position as ${green}${uppercase[$position]}"
+position_Display=$(($position + 1))
+echo "${green}$char${purple} is uppercase at position $count and rotates by $rotation back to $position_Display as ${green}${uppercase[$position]}"
 echo -n ${uppercase[$position]} >> $output_File
 fi
 count=$(($count + 1))
 done
-count=0
+count=1
 for input in ${lowercase[@]}
 do
 if [[ $char == $input ]]; then
 upper_Or_Lower="lower"
-position=$(($count - $rotation)) # need to handle this being a negative number
+position=$(($count - $rotation - 1)) # need to handle this being a negative number
 if [[ $position -lt "0" ]]; then
 position=$(($position + 26))
 fi
-echo "${green}$char${purple} is lowercase at position $count and rotates by $rotation back to $position as ${green}${lowercase[$position]}"
+position_Display=$(($position + 1))
+echo "${green}$char${purple} is lowercase at position $count and rotates by $rotation back to $position_Display as ${green}${lowercase[$position]}"
 echo -n ${lowercase[$position]} >> $output_File
 fi
 count=$(($count + 1))
 done
 done < $input_File
 
+cat $output_File | fold -w60 > tempfile
+rm $output_File
+mv tempfile $output_File
