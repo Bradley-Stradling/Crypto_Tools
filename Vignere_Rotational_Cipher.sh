@@ -136,6 +136,9 @@ keyword_Spaced=$(echo $keyword | sed 's/.\{1\}/& /g')
 
 keyword_Array=($keyword_Spaced)
 
+### setting this to test the above stuff without complaints
+rotation=3
+###
 if [[ $cipher == "encipher" ]]; then
 echo "${green}Encipher mode set${reset}"
 elif [[ $cipher == "decipher" ]]; then
@@ -143,7 +146,7 @@ echo "${green}Decipher mode set${reset}"
 fi
 # should this be moved to check each roational value?
 if [ $rotation -lt 26 ] && [ $rotation -gt 0 ]; then
-echo -e "${green}Keyword set to $keyword_Array ${reset}"
+echo -e "${green}Keyword set to ${keyword_Array[@]} ${reset}"
 else
 echo "${red}Unable to set the rotation to $rotation :( Exiting${reset}" && exit 1
 fi
