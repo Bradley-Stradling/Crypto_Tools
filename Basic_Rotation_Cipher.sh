@@ -23,37 +23,38 @@ show_Help() {
 echo -e "Requires 7 total inputs"
 echo -e "-e or --encipher \t# to flag encipher or dicpher"
 echo -e "-r or --rotation \t# to flag the rotation count followed by a number"\
-" between 0 and 26"
+		" between 0 and 26"
 echo -e "-i or --input-File \t# to flag the input file followed by the "\
-"path/name of the file"
+		"path/name of the file"
 echo -e "-o or --output-FIle \t# to flag the output file followed by the "\
-"path/name of the file\n"
+		"path/name of the file\n"
 echo -e "2 verbose options exist but are not needed to run"
 echo -e "-v or --verbose # displays cipher chart"
 echo -e "-vv or --very-verbose will display each char's rotation, not "\
-"recommended for long files\n"
+		"recommended for long files\n"
 echo -e "Example run ${red}encipher${reset} by rotation value of 3 \n \""\
-"${yellow}./caesar.sh -e -r 3 -i infile -o outfile${reset}\""
-echo -e "or \n \"${yellow}./caesar.sh --encipher -rotation 3 -input-File "\
-"infile -output-File outfile${reset}\"\n"
+		"${yellow}./Basic_Rotation_Cipher.sh -e -r 3 -i infile -o outfile"\
+		"${reset}\""
+echo -e "or \n \"${yellow}./Basic_Rotation_Cipher.sh --encipher -rotation 3 "\
+		"-input-File infile -output-File outfile${reset}\"\n"
 echo -e "Example run ${red}decipher${reset} by rotation value of 3 \n \""\
-"${yellow}./caesar.sh -d -r 3 -i infile -o outfile${reset}\""
-echo -e "or \n \"${yellow}./caesar.sh --decipher -rotation 3 -input-File "\
-"infile -output-File outfile${reset}\"\n"
+		"${yellow}./caesar.sh -d -r 3 -i infile -o outfile${reset}\""
+echo -e "or \n \"${yellow}./Basic_Rotation_Cipher.sh --decipher -rotation 3 "\
+		"-input-File infile -output-File outfile${reset}\"\n"
 echo -e "Example run ${red}verbose${reset} by rotation value of 3 \n \""\
-"${yellow}./caesar.sh -e -r 3 -i infile -o outfile -v${reset}\""
-echo -e "or \n \"${yellow}./caesar.sh --encipher -rotation 3 -input-File "\
-"infile -output-File outfile --verbose${reset}\"\n"
+		"${yellow}./caesar.sh -e -r 3 -i infile -o outfile -v${reset}\""
+echo -e "or \n \"${yellow}./Basic_Rotation_Cipher.sh --encipher -rotation 3 "\
+		"-input-File infile -output-File outfile --verbose${reset}\"\n"
 echo -e "Example run ${red}very verbose${reset} by rotation value of 3 \n \""\
-"${yellow}./caesar.sh -e -r 3 -i infile -o outfile -vv${reset}\""
-echo -e "or \n \"${yellow}./caesar.sh --encipher -rotation 3 -input-File "\
-"infile -output-File outfile --very-verbose${reset}\"\n"
+		"${yellow}./caesar.sh -e -r 3 -i infile -o outfile -vv${reset}\""
+echo -e "or \n \"${yellow}./Basic_Rotation_Cipher.sh --encipher -rotation "\
+		"3 -input-File infile -output-File outfile --very-verbose${reset}\"\n"
+exit 0
 }
 
 #check_Help
 if [[ $1 == "-h" || $1 == --help ]]; then
 show_Help
-exit 1
 fi
 
 more_Options() {
@@ -260,4 +261,3 @@ done < $input_File
 cat $output_File | fold -w60 > tempfile
 rm $output_File
 mv tempfile $output_File
-
