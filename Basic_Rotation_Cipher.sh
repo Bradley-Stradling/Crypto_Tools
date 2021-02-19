@@ -88,6 +88,7 @@ fi
 wrong_Order() {
 echo "${yellow}Please pass options in correct order. Use -h to see help."\
 " Exiting${reset}"
+exit 1
 }
 
 #set_Arguments
@@ -97,7 +98,6 @@ if [[ $1 == "-e" || $1 == --encipher ]]; then
 			cipher="decipher"
 				else
 					wrong_Order
-					exit 1
 fi
 
 if [[ $2 == "-r" || $2 == --rotation ]]; then
@@ -107,7 +107,6 @@ if [[ $2 == "-r" || $2 == --rotation ]]; then
 				rotation=$((26 - $3))
 					elif [[ $1 != "-r" ]]; then
 						wrong_Order
-							exit 1
 	fi
 fi
 
@@ -115,14 +114,12 @@ if [[ $4 == "-i" || $4 == --input_File ]]; then
 	input_File=$5
 		elif [[ $4 != "-i" ]]; then
 			wrong_Order
-			exit 1
 fi
 
 if [[ $6 == "-o" || $6 == --output_File ]]; then
 	output_File=$7
 		elif [[ $6 != "-o" ]]; then
 			wrong_Order
-			exit 1
 fi
 
 if [[ $8 == "-v" || $8 == "--verbose" ]]; then
@@ -147,12 +144,12 @@ if [[ -z "$rotation" ]]; then
 fi
 
 if [[ -z "$input_File" ]]; then
-	echo "${red} input_File variable was not set :( Exiting${reset}"
+	echo "${red} input-File variable was not set :( Exiting${reset}"
 	exit 1
 fi
 
 if [[ -z "$output_File" ]]; then
-	echo "${red} output_File variable was not set :( Exiting${reset}"
+	echo "${red} output-File variable was not set :( Exiting${reset}"
 	exit 1
 fi
 
@@ -192,6 +189,7 @@ uppercase=(
 "A" "B" "C" "D" "E" "F" "G" "H" "I" "J" "K" "L" "M" "N" "O" 
 "P" "Q" "R" "S" "T" "U" "V" "W" "X" "Y" "Z"
 )
+
 positional_Chart=( ${!uppercase[@]} )
 
 for i in ${positional_Chart[@]}
