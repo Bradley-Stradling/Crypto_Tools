@@ -20,41 +20,56 @@ black=`tput setaf 0`
 reset=`tput sgr0`
 
 show_Help() {
+echo -e "This script is designed to assist with processing a Rotational cipher."
+if [[ $1 == "-e" || $1 == "--explain" || $1 == "-vv" || $1 == "--very-verbose" ]]; then
+echo "### Explanation of a Rotational cipher here ###"
+fi
+if [[ $1 != "-e" && $1 != "--explain" ]]; then
 echo -e "Requires 7 total inputs"
-echo -e "-e or --encipher \t# to flag encipher or dicpher"
-echo -e "-r or --rotation \t# to flag the rotation count followed by a number"\
-		" between 0 and 26"
+echo -e "-e or --encipher || -d or --decipher \t# to flag encipher or dicpher"
+echo -e "-k or --keyword \t# to flag the key followed by a keyword"
 echo -e "-i or --input-File \t# to flag the input file followed by the "\
 		"path/name of the file"
 echo -e "-o or --output-FIle \t# to flag the output file followed by the "\
 		"path/name of the file\n"
-echo -e "2 verbose options exist but are not needed to run"
+echo -e "2 verbose options exist but are not needed to run, can be used with help"
 echo -e "-v or --verbose # displays cipher chart"
 echo -e "-vv or --very-verbose will display each char's rotation, not "\
 		"recommended for long files\n"
-echo -e "Example run ${red}encipher${reset} by rotation value of 3 \n \""\
-		"${yellow}./Basic_Rotation_Cipher.sh -e -r 3 -i infile -o outfile"\
-		"${reset}\""
-echo -e "or \n \"${yellow}./Basic_Rotation_Cipher.sh --encipher -rotation 3 "\
-		"-input-File infile -output-File outfile${reset}\"\n"
-echo -e "Example run ${red}decipher${reset} by rotation value of 3 \n \""\
-		"${yellow}./caesar.sh -d -r 3 -i infile -o outfile${reset}\""
-echo -e "or \n \"${yellow}./Basic_Rotation_Cipher.sh --decipher -rotation 3 "\
-		"-input-File infile -output-File outfile${reset}\"\n"
-echo -e "Example run ${red}verbose${reset} by rotation value of 3 \n \""\
-		"${yellow}./caesar.sh -e -r 3 -i infile -o outfile -v${reset}\""
-echo -e "or \n \"${yellow}./Basic_Rotation_Cipher.sh --encipher -rotation 3 "\
-		"-input-File infile -output-File outfile --verbose${reset}\"\n"
-echo -e "Example run ${red}very verbose${reset} by rotation value of 3 \n \""\
-		"${yellow}./caesar.sh -e -r 3 -i infile -o outfile -vv${reset}\""
-echo -e "or \n \"${yellow}./Basic_Rotation_Cipher.sh --encipher -rotation "\
-		"3 -input-File infile -output-File outfile --very-verbose${reset}\"\n"
+echo -e "An addtional option can be supplied after -h to call for explanation "\
+		"\bof a Vignere keyword cipher that this script is based on."
+echo -e "\"./Basic_Rotation_Cipher.sh -h -e\" or "\
+		"\"./Basic_Rotation_Cipher.sh --help --explain\"\n"
+fi
+
+if [[ $1 == "-v" || $1 == "--verbose" || $1 == "-vv" || $1 == "--very-verbose" ]]; then
+echo -e "Example run ${red}encipher${reset} with a rotation of 3\n\""\
+		"${yellow}\b./Basic_Rotation_Cipher.sh -e -r 3 -i infile -o outfile"\
+		"${reset}\b\""
+echo -e "or \n\"${yellow}./Basic_Rotation_Cipher.sh --encipher --rotational 3"\
+		"\b --input-File infile --output-File outfile${reset}\"\n"
+echo -e "Example run ${red}decipher${reset} with a rotation of 3\n\""\
+		"${yellow}\b./Basic_Rotation_Cipher.sh -d -r 3 -i infile -o outfile"\
+		"${reset}\b\""
+echo -e "or \n\"${yellow}./Basic_Rotation_Cipher.sh --decipher --rotation 3"\
+		"\b --input-File infile --output-File outfile${reset}\"\n"
+echo -e "Example run ${red}verbose${reset} with a rotation of 3\n\"${yellow}"\
+		"\b./Basic_Rotation_Cipher.sh -e -r 3 -i infile -o outfile -v"\
+		"${reset}\b\""
+echo -e "or \n\"${yellow}./Basic_Rotation_Cipher.sh --encipher --rotation 3"\
+		"--input-File infile --output-File outfile --verbose${reset}\"\n"
+echo -e "Example run ${red}very verbose${reset} with a rotation of 3\n\""\
+		"${yellow}\b./Basic_Rotation_Cipher.sh -e -r 3 -i infile -o outfile -vv"\
+		"${reset}\b\""
+echo -e "or \n\"${yellow}./Basic_Rotation_Cipher.sh --encipher --rotation"\
+		"ACE --input-File infile --output-File outfile --very-verbose${reset}\"\n"
+fi
 exit 0
 }
 
 #check_Help
 if [[ $1 == "-h" || $1 == --help ]]; then
-show_Help
+show_Help $2
 fi
 
 more_Options() {
@@ -261,3 +276,4 @@ done < $input_File
 cat $output_File | fold -w60 > tempfile
 rm $output_File
 mv tempfile $output_File
+
