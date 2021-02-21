@@ -121,7 +121,6 @@ if [[ $2 == "-r" || $2 == --rotation ]]; then
 		rotation=$3
 			elif [[ $cipher == decipher ]]; then
 				rotation=$((26 - $3))
-					elif [[ $1 != "-r" ]]; then
 						wrong_Order
 	fi
 display_Rotation=$3
