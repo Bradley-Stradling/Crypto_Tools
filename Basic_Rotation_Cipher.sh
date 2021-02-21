@@ -247,8 +247,8 @@ while read -n1 char; do
 				echo "${green}$char${purple} is uppercase at position $count "\
 					 "and rotates by $rotation back to $position_Display as "\
 					 "${green}${uppercase[$position]}"
-				echo -n ${uppercase[$position]} >> $output_File
 			fi
+			echo -n ${uppercase[$position]} >> $output_File
 		fi
 	count=$(($count + 1))
 	done
@@ -266,8 +266,8 @@ while read -n1 char; do
 				echo "${green}$char${purple} is lowercase at position $count "\
 					 "and rotates by $rotation back to $position_Display as "\
 					 "${green}${lowercase[$position]}"
-				echo -n ${lowercase[$position]} >> $output_File
 			fi
+			echo -n ${lowercase[$position]} >> $output_File
 		fi
 	count=$(($count + 1))
 	done
