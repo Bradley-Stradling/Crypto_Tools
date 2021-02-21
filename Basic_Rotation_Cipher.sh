@@ -124,6 +124,7 @@ if [[ $2 == "-r" || $2 == --rotation ]]; then
 					elif [[ $1 != "-r" ]]; then
 						wrong_Order
 	fi
+display_Rotation=$3
 fi
 
 if [[ $4 == "-i" || $4 == --input_File ]]; then
@@ -245,8 +246,8 @@ while read -n1 char; do
 			if [[ $silence == "noway" ]]; then
 				position_Display=$(($position + 1))
 				echo "${green}$char${purple} is uppercase at position $count "\
-					 "and rotates by $rotation back to $position_Display as "\
-					 "${green}${uppercase[$position]}"
+					 "and rotates by $display_Rotation back to $position_Display"\
+					 " as ${green}${uppercase[$position]}"
 			fi
 			echo -n ${uppercase[$position]} >> $output_File
 		fi
@@ -264,8 +265,8 @@ while read -n1 char; do
 			if [[ $silence == "noway" ]]; then
 				position_Display=$(($position + 1))
 				echo "${green}$char${purple} is lowercase at position $count "\
-					 "and rotates by $rotation back to $position_Display as "\
-					 "${green}${lowercase[$position]}"
+					 "and rotates by $display_Rotation back to $position_Display"\
+					 " as ${green}${lowercase[$position]}"
 			fi
 			echo -n ${lowercase[$position]} >> $output_File
 		fi
@@ -276,4 +277,3 @@ done < $input_File
 cat $output_File | fold -w60 > tempfile
 rm $output_File
 mv tempfile $output_File
-
