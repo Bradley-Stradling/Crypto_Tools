@@ -231,10 +231,6 @@ while read -n1 char; do
 	count=1
 	for input in ${uppercase[@]}
 	do
-		if [[ $char == " " ]]; then
-			echo "a space was detected"
-		fi
-
 		if [[ $char == $input ]]; then
 			upper_Or_Lower="upper"
 			position=$(($count - $rotation - 1))
