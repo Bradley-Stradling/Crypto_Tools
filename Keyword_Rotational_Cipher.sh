@@ -216,14 +216,12 @@ while read -n1 char; do
 	if [[ "$cipher" == "decipher" ]]; then
 		display_Rotation=$((26 - ${key_Rotation[$rotation_Count]}))
 	fi
-	echo $rotation_Count
 	count=1
 	for input in ${uppercase[@]}
 	do
 		if [[ $char == $input ]]; then
 			upper_Or_Lower="upper"
 			position=$(($count - $display_Rotation - 1))
-			echo "Letter found"
 			if [[ $position -lt "0" ]]; then
 				position=$(($position + 26))
 			fi
@@ -244,7 +242,6 @@ while read -n1 char; do
 		if [[ $char == $input ]]; then
 			upper_Or_Lower="lower"
 			position=$(($count - $display_Rotation - 1))
-			echo "Letter found"
 			if [[ $position -lt "0" ]]; then
 				position=$(($position + 26))
 			fi
