@@ -78,29 +78,6 @@ echo "${yellow}Please pass all needed options and parameters. Use -h to see "\
 exit 1
 }
 
-#check_Arguments
-if [[ -z "$1" ]]; then
-	more_Options
-fi
-if [[ -z "$2" ]]; then
-	more_Options
-fi
-if [[ -z "$3" ]]; then
-	more_Options
-fi
-if [[ -z "$4" ]]; then
-	more_Options
-fi
-if [[ -z "$5" ]]; then
-	more_Options
-fi
-if [[ -z "$6" ]]; then
-	more_Options
-fi
-if [[ -z "$7" ]]; then
-	more_Options
-fi
-
 wrong_Order() {
 echo "${yellow}Please pass options in correct order. Use -h to see help."\
 " Exiting${reset}"
