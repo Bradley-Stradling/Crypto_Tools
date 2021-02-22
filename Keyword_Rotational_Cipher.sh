@@ -19,10 +19,6 @@ lightblue=`tput setaf 6`
 black=`tput setaf 0`
 reset=`tput sgr0`
 
-#echo "Script currently is exactly the same functionally as "\
-#	 "Basic_Rotational_Cipher.sh, only the help function has been changed."
-#exit 0
-
 show_Help() {
 echo -e "This script is designed to assist with processing a Vignere cipher."
 if [[ $1 == "-e" || $1 == "--explain" || $1 == "-vv" || $1 == "--very-verbose" ]]; then
@@ -82,34 +78,15 @@ echo "${yellow}Please pass all needed options and parameters. Use -h to see "\
 exit 1
 }
 
-#check_Arguments
-if [[ -z "$1" ]]; then
-	more_Options
-fi
-if [[ -z "$2" ]]; then
-	more_Options
-fi
-if [[ -z "$3" ]]; then
-	more_Options
-fi
-if [[ -z "$4" ]]; then
-	more_Options
-fi
-if [[ -z "$5" ]]; then
-	more_Options
-fi
-if [[ -z "$6" ]]; then
-	more_Options
-fi
-if [[ -z "$7" ]]; then
-	more_Options
-fi
-
 wrong_Order() {
 echo "${yellow}Please pass options in correct order. Use -h to see help."\
 " Exiting${reset}"
 exit 1
 }
+
+# testing purposes
+rotation=3
+## remove me babeh
 
 #set_Arguments
 if [[ $1 == "-e" || $1 == --encipher ]]; then
@@ -120,14 +97,18 @@ if [[ $1 == "-e" || $1 == --encipher ]]; then
 					wrong_Order
 fi
 
-if [[ $2 == "-r" || $2 == --rotation ]]; then
+if [[ $2 == "-k" || $2 == --keyword ]]; then
+	keyword=$3
+	key_Length=${#3}
 	if [[ $cipher == "encipher" ]]; then
-		rotation=$3
+		#rotation=$3
+		echo "2nd if in set arguments is wonks"
 			elif [[ $cipher == decipher ]]; then
-				rotation=$((26 - $3))
-					elif [[ $1 != "-r" ]]; then
+				rotation=$((26 - $rotation))
+					else
 						wrong_Order
 	fi
+	display_Rotation=$3
 fi
 
 if [[ $4 == "-i" || $4 == --input_File ]]; then
@@ -232,6 +213,7 @@ fi
 
 #cipher
 while read -n1 char; do
+	rotation_Count=0
 	count=1
 	for input in ${uppercase[@]}
 	do
@@ -249,10 +231,10 @@ while read -n1 char; do
 			if [[ $silence == "noway" ]]; then
 				position_Display=$(($position + 1))
 				echo "${green}$char${purple} is uppercase at position $count "\
-					 "and rotates by $rotation back to $position_Display as "\
+					 "and rotates by $display_Rotation back to $position_Display as "\
 					 "${green}${uppercase[$position]}"
-				echo -n ${uppercase[$position]} >> $output_File
 			fi
+			echo -n ${uppercase[$position]} >> $output_File
 		fi
 	count=$(($count + 1))
 	done
@@ -268,10 +250,10 @@ while read -n1 char; do
 			if [[ $silence == "noway" ]]; then
 				position_Display=$(($position + 1))
 				echo "${green}$char${purple} is lowercase at position $count "\
-					 "and rotates by $rotation back to $position_Display as "\
+					 "and rotates by $display_Rotation back to $position_Display as "\
 					 "${green}${lowercase[$position]}"
-				echo -n ${lowercase[$position]} >> $output_File
 			fi
+			echo -n ${lowercase[$position]} >> $output_File
 		fi
 	count=$(($count + 1))
 	done
