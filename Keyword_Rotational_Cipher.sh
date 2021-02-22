@@ -99,16 +99,9 @@ fi
 
 if [[ $2 == "-k" || $2 == --keyword ]]; then
 	keyword=$3
-	key_Length=${#3}
-	if [[ $cipher == "encipher" ]]; then
-		#rotation=$3
-		echo "2nd if in set arguments is wonks"
-			elif [[ $cipher == decipher ]]; then
-				rotation=$((26 - $rotation))
-					else
-						wrong_Order
-	fi
-	display_Rotation=$3
+	keyword_Length=${#3}
+		else
+			wrong_Order
 fi
 
 if [[ $4 == "-i" || $4 == --input_File ]]; then
@@ -133,36 +126,15 @@ if [[ $8 == "-vv" || $8 == "--very-verbose" ]]; then
 	silence="noway"
 fi
 
-#check_Choices
-if [[ -z "$cipher" ]]; then
-	echo "${red} cipher variable was not set :( Exiting${reset}"
-	exit 1
-fi
-
-if [[ -z "$rotation" ]]; then
-	echo "${red} rotation variable was not set :( Exiting${reset}"
-	exit 1
-fi
-
-if [[ -z "$input_File" ]]; then
-	echo "${red} input-File variable was not set :( Exiting${reset}"
-	exit 1
-fi
-
-if [[ -z "$output_File" ]]; then
-	echo "${red} output-File variable was not set :( Exiting${reset}"
-	exit 1
-fi
-
 if [[ $cipher == "encipher" ]]; then
 	echo "${green}Encipher mode set${reset}"
 		elif [[ $cipher == "decipher" ]]; then
 			echo "${green}Decipher mode set${reset}"
 fi
 
-#check_File_Locations
-if [ $rotation -lt 26 ] && [ $rotation -gt 0 ]; then
-	echo -e "${green}Rotation set to $rotation ${reset}"
+#check_File_Locations ########## Hey this needs be changed
+if [ $rotation -lt 26 ] && [ $rotation -gt 0 ]; then # in here
+	echo -e "${green}Keyword set to $keyword with a length of $keyword_Length ${reset}"
 		else
 			echo "${red}Unable to set the rotation to $rotation :( "\
 				 "Exiting${reset}" && exit 1
@@ -198,41 +170,69 @@ do
 positional_Chart[$i]=$(( ${positional_Chart[$i]} + 1 ))
 done
 
+for ((i=0 ; i < $keyword_Length ; i++)); do
+slot=$(echo ${keyword:$i:1})
+keyword_Array+=($slot)
+unset $slot
+done
+
+for letter in ${keyword_Array[@]}
+do
+	count=0
+	for input in ${lowercase[@]}
+	do
+		if [[ $letter == $input ]]; then
+		letter_Position=${positional_Chart[$count]}
+		key_Rotation+=($letter_Position)
+		fi
+	count=$(($count + 1))
+	done
+done
+
 if [[ $silence == "no"  || $silence == "noway" ]]; then
-	echo "${blue}${positional_Chart[@]}"
-	shifted_Positional_Chart=("${positional_Chart[@]:$rotation}" \
-	"${positional_Chart[@]:0:$rotation}")
-	echo ${shifted_Positional_Chart[@]}
-	echo ${lightblue}${uppercase[@]}
-	shifted_Uppercase=("${uppercase[@]:$rotation}" "${uppercase[@]:0:$rotation}")
-	echo ${shifted_Uppercase[@]}
-	echo ${yellow}${lowercase[@]}
-	shifted_Lowercase=("${lowercase[@]:$rotation}" "${lowercase[@]:0:$rotation}")
-	echo ${shifted_Lowercase[@]}${purple}
+	echo ${keyword_Array[@]}
+	echo ${key_Rotation[@]}
+	for rotation_Key in ${key_Rotation[@]}
+	do
+	echo $rotation_Key
+	echo ${lowercase[@]}
+	shifted_Lowercase=("${lowercase[@]:$rotation_Key}" "${lowercase[@]:0:$rotation_Key}")
+	echo ${shifted_Lowercase[@]}
+	done
 fi
 
+echo 
+rotation_Count=0
+IFS=''
 #cipher
-while read -n1 char; do
-	rotation_Count=0
+while read -n1 char; do	
+	if [[ $char == " " ]]; then
+	continue
+	fi
+	if [[ $rotation_Count == $keyword_Length ]]; then
+		rotation_Count=$((0))
+	fi
+	display_Rotation=$((${key_Rotation[$rotation_Count]}))
+	if [[ "$cipher" == "decipher" ]]; then
+		display_Rotation=$((26 - ${key_Rotation[$rotation_Count]}))
+	fi
+	echo $rotation_Count
 	count=1
 	for input in ${uppercase[@]}
 	do
-		if [[ $char == " " ]]; then
-			echo "a space was detected"
-		fi
-
 		if [[ $char == $input ]]; then
 			upper_Or_Lower="upper"
-			position=$(($count - $rotation - 1))
+			position=$(($count - $display_Rotation - 1))
+			echo "Letter found"
 			if [[ $position -lt "0" ]]; then
 				position=$(($position + 26))
 			fi
 
 			if [[ $silence == "noway" ]]; then
 				position_Display=$(($position + 1))
-				echo "${green}$char${purple} is uppercase at position $count "\
-					 "and rotates by $display_Rotation back to $position_Display as "\
-					 "${green}${uppercase[$position]}"
+				echo "${green}$char${purple} is uppercase at position $count"\
+					 "and rotates by $display_Rotation back to $position_Display"\
+					 " as ${green}${uppercase[$position]}${reset}"
 			fi
 			echo -n ${uppercase[$position]} >> $output_File
 		fi
@@ -243,20 +243,22 @@ while read -n1 char; do
 	do
 		if [[ $char == $input ]]; then
 			upper_Or_Lower="lower"
-			position=$(($count - $rotation - 1))
+			position=$(($count - $display_Rotation - 1))
+			echo "Letter found"
 			if [[ $position -lt "0" ]]; then
 				position=$(($position + 26))
 			fi
 			if [[ $silence == "noway" ]]; then
 				position_Display=$(($position + 1))
-				echo "${green}$char${purple} is lowercase at position $count "\
-					 "and rotates by $display_Rotation back to $position_Display as "\
-					 "${green}${lowercase[$position]}"
+				echo "${green}$char${purple} is lowercase at position $count"\
+					 "and rotates by $display_Rotation back to $position_Display"\
+					 " as ${green}${lowercase[$position]}${reset}"
 			fi
 			echo -n ${lowercase[$position]} >> $output_File
 		fi
 	count=$(($count + 1))
 	done
+rotation_Count=$(($rotation_Count + 1))
 done < $input_File
 
 cat $output_File | fold -w60 > tempfile
