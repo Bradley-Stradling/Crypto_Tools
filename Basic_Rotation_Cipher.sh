@@ -96,8 +96,9 @@ fi
 if [[ $2 == "-r" || $2 == --rotation ]]; then
 	if [[ $cipher == "encipher" ]]; then
 		rotation=$3
-			elif [[ $cipher == decipher ]]; then
+			elif [[ $cipher == "decipher" ]]; then
 				rotation=$((26 - $3))
+					else
 						wrong_Order
 	fi
 display_Rotation=$3
@@ -123,33 +124,6 @@ fi
 
 if [[ $8 == "-vv" || $8 == "--very-verbose" ]]; then
 	silence="noway"
-fi
-
-#check_Choices
-if [[ -z "$cipher" ]]; then
-	echo "${red} cipher variable was not set :( Exiting${reset}"
-	exit 1
-fi
-
-if [[ -z "$rotation" ]]; then
-	echo "${red} rotation variable was not set :( Exiting${reset}"
-	exit 1
-fi
-
-if [[ -z "$input_File" ]]; then
-	echo "${red} input-File variable was not set :( Exiting${reset}"
-	exit 1
-fi
-
-if [[ -z "$output_File" ]]; then
-	echo "${red} output-File variable was not set :( Exiting${reset}"
-	exit 1
-fi
-
-if [[ $cipher == "encipher" ]]; then
-	echo "${green}Encipher mode set${reset}"
-		elif [[ $cipher == "decipher" ]]; then
-			echo "${green}Decipher mode set${reset}"
 fi
 
 #check_File_Locations
@@ -204,7 +178,11 @@ if [[ $silence == "no"  || $silence == "noway" ]]; then
 fi
 
 #cipher
+IFS=''
 while read -n1 char; do
+	if [[ $char == " " ]]; then
+	continue
+	fi
 	count=1
 	for input in ${uppercase[@]}
 	do
@@ -217,9 +195,9 @@ while read -n1 char; do
 
 			if [[ $silence == "noway" ]]; then
 				position_Display=$(($position + 1))
-				echo "${green}$char${purple} is uppercase at position $count "\
+				echo "${green}$char${purple} is uppercase at position $count"\
 					 "and rotates by $display_Rotation back to $position_Display"\
-					 " as ${green}${uppercase[$position]}"
+					 " as ${green}${uppercase[$position]}${reset}"
 			fi
 			echo -n ${uppercase[$position]} >> $output_File
 		fi
@@ -236,9 +214,9 @@ while read -n1 char; do
 			fi
 			if [[ $silence == "noway" ]]; then
 				position_Display=$(($position + 1))
-				echo "${green}$char${purple} is lowercase at position $count "\
+				echo "${green}$char${purple} is lowercase at position $count"\
 					 "and rotates by $display_Rotation back to $position_Display"\
-					 " as ${green}${lowercase[$position]}"
+					 " as ${green}${lowercase[$position]}${reset}"
 			fi
 			echo -n ${lowercase[$position]} >> $output_File
 		fi
